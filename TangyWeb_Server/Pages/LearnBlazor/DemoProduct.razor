@@ -1,0 +1,77 @@
+﻿@page "/learnBlazor/demoProduct"
+
+<h3>DemoProduct</h3>
+
+<div class="row">
+    <div class="border bg-light py-3">
+            <div class="row">
+        @foreach (var product in Products)
+        {
+                <div class="col-6">
+                    <div class="card mt-3">
+                        <div class="card-header lead text-center">
+                            Product @product.Id
+                        </div>
+                        <div class="card-body">
+                            @product.Name <br>
+                            Show properties : <input type="checkbox" @bind-value="@product.IsActive" @bind-value:event="oninput">
+                            
+                            @if (@product.IsActive == true) {
+                                @foreach (var prop in product.ProductProperties)
+                                {
+                                    <p class="mt-2">@prop.Key - @prop.Value</p>
+                                }
+                            }
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="button" class="btn btn-success m-2" style="width:100px" value="Save">
+                                    <input type="button" class="btn btn-danger float-right m-2" style="width:100px" value="Delete">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        }
+            </div>
+    </div>
+</div>
+
+
+
+
+
+@code {
+
+    List<Demo_Product> Products = new();
+    protected override void OnInitialized()
+    {
+        Products.Add(new()
+        {
+            Id = 1,
+            Name = "Midnight Blaze",
+            Price = 1110.99,
+            IsActive = false,
+            ProductProperties = new()
+            {
+                new Demo_ProductProp { Id = 1, Key = "Flavor", Value = "Rose" },
+                new Demo_ProductProp { Id = 2, Key = "Size", Value = "20oz" },
+                new Demo_ProductProp { Id = 3, Key = "Color", Value = "Purple" }
+            }
+        });
+
+        Products.Add(new()
+        {
+            Id = 2,
+            Name = "Blossom Lily",
+            Price = 13.99,
+            IsActive = true,
+            ProductProperties = new()
+            {
+                new Demo_ProductProp { Id = 1, Key = "Flavor", Value = "Lily" },
+                new Demo_ProductProp { Id = 2, Key = "Size", Value = "18oz" },
+                new Demo_ProductProp { Id = 3, Key = "Color", Value = "White" }
+            }
+        });
+    }
+}
