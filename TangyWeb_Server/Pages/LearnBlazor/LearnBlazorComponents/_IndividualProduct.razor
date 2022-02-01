@@ -1,0 +1,41 @@
+﻿ <div class="col-6">
+    <div class="card mt-3" >
+        <div class="card-header lead text-center" @onclick="(args)=>LastSelectedProductUpdated(args, Product.Name)">
+            Product @Product.Id
+        </div>
+        <div class="card-body">
+            <input type="checkbox" @onchange="FavoriteUpdated"> Add To Favorites <br><br>
+            @Product.Name <br>
+            Show properties : <input type="checkbox" @bind-value="@Product.IsActive" @bind-value:event="oninput">
+            @if (@Product.IsActive == true) {
+                @foreach (var prop in Product.ProductProperties)
+                {
+                    <p class="mt-2">@prop.Key - @prop.Value</p>
+                }
+            }
+            <div class="row">
+                <div class="col-md-12">
+                    <_EditDeleteButton IsActive="@Product.IsActive" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Demo_Product Product { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnFavoriteUpdated { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnLastSelectedProductChange { get; set;}
+    private async Task FavoriteUpdated(ChangeEventArgs e) {
+        await OnFavoriteUpdated.InvokeAsync((bool)e.Value);
+    }
+
+    private async Task LastSelectedProductUpdated(MouseEventArgs e, string name) {
+        await OnLastSelectedProductChange.InvokeAsync(name);
+    }
+}

@@ -1,39 +1,16 @@
 ﻿@page "/learnBlazor/demoProduct"
 
 <h3>DemoProduct</h3>
-
+<p>Favorites Total: @SelectedFavoriteCount</p>
+<p>Last Selected Product: @LastSelectedProduct </p> 
 <div class="row">
     <div class="border bg-light py-3">
-            <div class="row">
-        @foreach (var product in Products)
-        {
-                <div class="col-6">
-                    <div class="card mt-3">
-                        <div class="card-header lead text-center">
-                            Product @product.Id
-                        </div>
-                        <div class="card-body">
-                            @product.Name <br>
-                            Show properties : <input type="checkbox" @bind-value="@product.IsActive" @bind-value:event="oninput">
-                            
-                            @if (@product.IsActive == true) {
-                                @foreach (var prop in product.ProductProperties)
-                                {
-                                    <p class="mt-2">@prop.Key - @prop.Value</p>
-                                }
-                            }
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="button" class="btn btn-success m-2" style="width:100px" value="Save">
-                                    <input type="button" class="btn btn-danger float-right m-2" style="width:100px" value="Delete">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        }
-            </div>
+        <div class="row">
+            @foreach (var product in Products)
+            {
+                <_IndividualProduct Product="@product" OnFavoriteUpdated="FavoriteCountUpdate" OnLastSelectedProductChange="LastSelectedUpdate" />
+            }
+        </div>
     </div>
 </div>
 
@@ -43,7 +20,10 @@
 
 @code {
 
+    private string LastSelectedProduct { get; set; }
+    private int SelectedFavoriteCount { get; set; } = 0;
     List<Demo_Product> Products = new();
+        
     protected override void OnInitialized()
     {
         Products.Add(new()
@@ -73,5 +53,17 @@
                 new Demo_ProductProp { Id = 3, Key = "Color", Value = "White" }
             }
         });
+    }
+
+    protected void FavoriteCountUpdate(bool isSelected) {
+        if(isSelected) {
+            SelectedFavoriteCount++;
+        } else {
+            SelectedFavoriteCount--;
+        }
+    }
+
+    protected void LastSelectedUpdate(string productName) {
+        LastSelectedProduct = productName; 
     }
 }
