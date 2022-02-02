@@ -8,7 +8,10 @@
         <div class="row">
             @foreach (var product in Products)
             {
-                <_IndividualProduct Product="@product" OnFavoriteUpdated="FavoriteCountUpdate" OnLastSelectedProductChange="LastSelectedUpdate" />
+                <_IndividualProduct Product="@product" OnFavoriteUpdated="FavoriteCountUpdate" OnLastSelectedProductChange="LastSelectedUpdate">
+                <FirstFragment>#1</FirstFragment>
+                <SecondFragment>#2</SecondFragment>
+                </_IndividualProduct>
             }
         </div>
     </div>
@@ -19,6 +22,8 @@
 
 
 @code {
+
+
 
     private string LastSelectedProduct { get; set; }
     private int SelectedFavoriteCount { get; set; } = 0;
